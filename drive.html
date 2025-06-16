@@ -1,37 +1,31 @@
-u<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <title>Folder Infinitum - Webapp</title>
-  <script async src="/scripts/startup.js">
-  </script>
+  <link rel="icon" type="text/plain" href="data:text/plain;charset=UTF-8,📁">
+  <link rel="apple-touch-icon" type="text/plain" href="data:text/plain;charset=UTF-8,📁">
   <style>
     body {
-background: black;
-color:cyan;
-}
-footer:has(> div[role="contentinfo"] > p > label > input) {
-top: 100%;
-position: absolute;
-z-index:9;
-}
-footer:has(> div[role="contentinfo"] > p > label > input:checked) {
-top:125%;
-}
-#navButton:checked + (nav, div[role="navigator"]) {
-content:show;
-position:absolute;
-z-index: 9;
-}
-label > .underline {
-text-decoration:underline;
-}
- nav > div > a {
-display: block;
-}
-@media (scripting: enabled) + body > div:hidden {
-content:show;
-      }
-    
+      background: black;
+      color:cyan;
+    }
+    #navButton:checked + (nav, div[role="navigator"]) {
+      content:show;
+      position:absolute;
+      z-index: 9;
+    }
+    label > .underline {
+      text-decoration:underline;
+    }
+    nav > div > a {
+      display: block;
+    }
+    @media (scripting: enabled) + body > div:hidden {
+      content:show;
+    }
+    h4 > a {
+      display: block;
+    }
   </style>
   <script>
     function T(s) {
@@ -67,7 +61,7 @@ let inactivityTimer;
 function A() {
   clearTimeout(inactivityTimer);
   inactivityTimer = setTimeout(async () => {
-    let d=document.querySelector("#fileHolder").innerHTML;
+    let d = document.querySelector("#fileHolder").innerHTML;
     while (T(d)) {
       d=await btoa(String.fromCharCode(...new Uint8Array(await new Response(new Blob([d]).stream().pipeThrough(new CompressionStream("gzip"))).arrayBuffer())));
     }
@@ -89,12 +83,36 @@ window.onload = async () => {
     }
   }
 document.querySelector("#fileHolder").innerHTML = d;
-document.querySelector("#fileHolder").addEventListener("change" || "blur" || "input", A);
+document.querySelector("#fileHolder").addEventListener("change" || "blur" || "input", A());
 };
   </script>
 </head>
 <body>
-  <main>
+  <noscript>
+    err:scripts not loaded!
+  </noscript>
+  <div hidden>
+    <header>
+      <div role="head">
+        <h1>
+          <label for="navbutton">
+            <input type="checkbox" id="navbutton" hidden>
+            <a class="underline">=</a>
+          </label>
+        </h1>
+        <nav hidden>
+             <div role="navigator" hidden>
+               <a href="/drive.html">drive</a>
+               <a href="mailto: zackiontimelord@gmail.com?subject=issue-with-folder-infinitum">contact</a>
+             </div>
+         </nav>
+      <div>
+        <h2>Folder Infinitum</h2>
+        <h3>infinite space free</h3>
+      </div>
+    </div>
+    </header>
+    <main>
     <div role="main">
       <label for="files">
         <input id="files" multiple type="file" onchange="handleFileUpload(event)">
@@ -105,6 +123,7 @@ document.querySelector("#fileHolder").addEventListener("change" || "blur" || "in
       </label>
       <h4 id="fileHolder" oncontextmenu="this.tagName==='a'&&!deleteCheckbox.checked?this.remove();" onclick="this.tagName==='a'?window.open(URL.createObjectURL(new Blob([atob(e.target.id)])));});"></h4>
     </div>
-  </main>
+    </main>
+  </div>
 </body>
 </html>
