@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+u<!DOCTYPE html>
 <html lang="en">
 <head>
   <title>Folder Infinitum - Webapp</title>
@@ -33,18 +33,77 @@ content:show;
       }
     
   </style>
+  <script>
+    function T(s) {
+  try {
+    localStorage.setItem("h", s);
+    return 0;
+  } catch (e) {
+    return 1;
+  }
+}
+
+function handleFileUpload(e) {
+  e.preventDefault();
+  if (!e.target.files) return;
+  const anchor = document.createElement("a");
+  [...e.target.files].forEach((f) => {
+    const r = new FileReader();
+    r.onload = () => {
+      try {
+        anchor.id = btoa(r.result);
+        anchor.textContent = f.name;
+        document.querySelector("#fileHolder").appendChild(anchor);
+      } catch(error) {
+        console.error("failed to load file:"+error);
+      }
+
+    };
+    r.readAsArrayBuffer(f);
+  });
+}
+
+let inactivityTimer;
+function A() {
+  clearTimeout(inactivityTimer);
+  inactivityTimer = setTimeout(async () => {
+    let d=document.querySelector("#fileHolder").innerHTML;
+    while (T(d)) {
+      d=await btoa(String.fromCharCode(...new Uint8Array(await new Response(new Blob([d]).stream().pipeThrough(new CompressionStream("gzip"))).arrayBuffer())));
+    }
+    localStorage.setItem("h", d);
+    alert("saved successfully!");
+  }, 2000);
+}
+
+window.onload = async () => {
+  let d = localStorage.getItem("h") ?? "";
+  while (d.endsWith("="))
+    d = async () =>{ 
+      try {
+        return new TextDecoder().decode(await new Response(new Response(new Blob([Uint8Array.from(atob(d), c => c.charCodeAt(0))])).body.pipeThrough(new DecompressionStream("gzip"))).arrayBuffer());
+      } catch () {
+        alert("Decompression failed, sorry!");
+        return null;
+      }
+    }
+  }
+document.querySelector("#fileHolder").innerHTML = d;
+document.querySelector("#fileHolder").addEventListener("change" || "blur" || "input", A);
+};
+  </script>
 </head>
 <body>
   <main>
     <div role="main">
       <label for="files">
-        <input id="files" multiple type="file">
+        <input id="files" multiple type="file" onchange="handleFileUpload(event)">
       </label>
       <br>
       <label for="deleteCheckbox">
-        <input type="checkbox" id="deleteCheckbox">Delete files?
+        <input type="checkbox" id="deleteCheckbox" onchange="document.querySelector('#FileHolder').contenteditable=this.checked.toString()">Delete files?
       </label>
-      <h4 id="fileHolder"></h4>
+      <h4 id="fileHolder" oncontextmenu="this.tagName==='a'&&!deleteCheckbox.checked?this.remove();" onclick="this.tagName==='a'?window.open(URL.createObjectURL(new Blob([atob(e.target.id)])));});"></h4>
     </div>
   </main>
 </body>
