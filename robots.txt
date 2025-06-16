@@ -1,0 +1,6 @@
+User-agent: *
+allow:/
+disallow:/scripts/
+disallow:/styles/
+disallow:/error404.html
+sitemap:/sitemap.xml
