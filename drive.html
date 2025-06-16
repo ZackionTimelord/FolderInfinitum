@@ -1,11 +1,38 @@
-I<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <title>Folder Infinitum - Webapp</title>
   <script async src="/scripts/startup.js">
   </script>
-  <link rel="stylesheet" 
-  type="style/css" href="/styles/drive.css">
+  <style>
+    body {
+background: black;
+color:cyan;
+}
+footer:has(> div[role="contentinfo"] > p > label > input) {
+top: 100%;
+position: absolute;
+z-index:9;
+}
+footer:has(> div[role="contentinfo"] > p > label > input:checked) {
+top:125%;
+}
+#navButton:checked + (nav, div[role="navigator"]) {
+content:show;
+position:absolute;
+z-index: 9;
+}
+label > .underline {
+text-decoration:underline;
+}
+ nav > div > a {
+display: block;
+}
+@media (scripting: enabled) + body > div:hidden {
+content:show;
+      }
+    
+  </style>
 </head>
 <body>
   <main>
